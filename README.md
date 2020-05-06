@@ -6,7 +6,9 @@ Given an initial state in a text file, the code tries to find the solution to it
 i.e. Possible Output for A*:
 
 ['up', 'up', 'right', 'down', 'left', 'up', 'right', 'right', 'down', 'down']
+
 The depth is 10
+
 Total Expanded Nodes = 53 
 
 Initial Board State:
