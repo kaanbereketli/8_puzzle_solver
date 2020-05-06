@@ -10,6 +10,7 @@
 # -------------
 #
 # Where 0 denotes space.
+initial_state = []
 goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 total_expanded_nodes = 0
 #
@@ -99,13 +100,14 @@ def expand_node(node):
     """Returns a list of expanded nodes"""
     global total_expanded_nodes
     expanded_nodes = []
-    expanded_nodes.append(create_node(move_up(node.state), node, "u", node.depth + 1, 0))
-    expanded_nodes.append(create_node(move_down(node.state), node, "d", node.depth + 1, 0))
-    expanded_nodes.append(create_node(move_left(node.state), node, "l", node.depth + 1, 0))
-    expanded_nodes.append(create_node(move_right(node.state), node, "r", node.depth + 1, 0))
+    expanded_nodes.append(create_node(move_up(node.state), node, "up", node.depth + 1, 0))
+    expanded_nodes.append(create_node(move_down(node.state), node, "down", node.depth + 1, 0))
+    expanded_nodes.append(create_node(move_left(node.state), node, "left", node.depth + 1, 0))
+    expanded_nodes.append(create_node(move_right(node.state), node, "right", node.depth + 1, 0))
     # Filter the list and remove the nodes that are impossible (move function returned None)
     expanded_nodes = [node for node in expanded_nodes if node.state != None]  # list comprehension!
     total_expanded_nodes = total_expanded_nodes + 1
+    #print("Total Expanded Nodes =", total_expanded_nodes)
     return expanded_nodes
 
 
@@ -216,6 +218,7 @@ class Node:
 
 
 def readfile(filename):
+    global initial_state
     f = open(filename)
     data = f.read()
     # Get rid of the newlines
@@ -225,12 +228,14 @@ def readfile(filename):
     state = []
     for element in data:
         state.append(int(element))
+    initial_state = state
     return state
 
 
 # Main method
 def main():
     global total_expanded_nodes
+    global initial_state
     starting_state = readfile("state.txt")
     # Change this function to use bfs, dfs, uniform_cost or a_star
     result = a_star(starting_state, goal_state)
@@ -241,7 +246,11 @@ def main():
     else:
         print(result)
         print("The depth is", len(result))
-        print("Total Expanded Nodes =", total_expanded_nodes)
+        print("Total Expanded Nodes =", total_expanded_nodes, "\n")
+        print("Initial Board State:")
+        display_board(initial_state)
+        print("Final Board State:")
+        display_board(goal_state)
 
 
 # A python-isim. Basically if the file is being run execute the main() function.
